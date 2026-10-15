@@ -1,127 +1,14 @@
 /**
  * Global Styles - ETF Nexo (Astro PoC)
  * Tailwind CSS v4
+ *
+ * NOTA: Variables principales están en design-system.css
+ * Este archivo solo contiene Tailwind y overrides específicos
  */
 
 @import "tailwindcss";
 
-/* Design Tokens (copiados de Next.js) */
-:root {
-  /* Colors - Brand */
-  --color-primary: #FA8029;
-  --color-primary-dark: #E66D1A;
-  --color-primary-light: #FFB27A;
-
-  --color-success: #34B257;
-  --color-success-dark: #2A9147;
-  --color-success-light: #5DC97C;
-
-  --color-error: #DC2626;
-  --color-warning: #F59E0B;
-
-  /* Colors - Neutral */
-  --color-neutral-0: #FFFFFF;
-  --color-neutral-50: #F9FAFB;
-  --color-neutral-100: #F3F4F6;
-  --color-neutral-200: #E5E7EB;
-  --color-neutral-300: #D1D5DB;
-  --color-neutral-400: #9CA3AF;
-  --color-neutral-500: #6B7280;
-  --color-neutral-600: #4B5563;
-  --color-neutral-700: #374151;
-  --color-neutral-800: #1F2937;
-  --color-neutral-900: #111827;
-
-  /* Spacing */
-  --spacing-xs: 8px;
-  --spacing-sm: 12px;
-  --spacing-md: 20px;
-  --spacing-lg: 32px;
-  --spacing-xl: 48px;
-  --spacing-2xl: 64px;
-  --spacing-3xl: 80px;
-  --spacing-4xl: 96px;
-  --spacing-5xl: 128px;
-  --spacing-6xl: 160px;
-  --spacing-7xl: 200px;
-  --spacing-8: 80px;
-
-  /* Typography */
-  --font-heading: 'Open Sans Hebrew', -apple-system, sans-serif;
-  --font-body: 'Manrope', -apple-system, sans-serif;
-
-  /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-/* Base */
-* {
-  box-sizing: border-box;
-}
-
-html {
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+/* Overrides específicos de Astro (si son necesarios) */
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--color-neutral-50);
-  color: var(--color-neutral-900);
-  line-height: 1.6;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
-}
-
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.5rem; }
-h5 { font-size: 1.25rem; }
-h6 { font-size: 1rem; }
-
-p {
-  margin: 0 0 1rem;
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: var(--color-primary-dark);
-}
-
-/* Utilities */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding: 0 var(--spacing-lg);
-  }
+  background: var(--color-slate-50);
 }

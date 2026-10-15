@@ -1,0 +1,247 @@
+---
+/**
+ * Footer Component - Diseño Agora Real REAL
+ * Footer simple con partners y legal
+ */
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+
+    {/* Partners Section - Similar a Agora Real */}
+    <div class="footer__partners">
+      <div class="footer__partners-title">Trusted by</div>
+      <div class="footer__partners-grid">
+        {/* Aquí irían logos de brokers/partners cuando los tengas */}
+        <div class="partner-placeholder">Interactive Brokers</div>
+        <div class="partner-placeholder">DeGiro</div>
+        <div class="partner-placeholder">eToro</div>
+        <div class="partner-placeholder">XTB</div>
+      </div>
+    </div>
+
+    {/* Main Footer Content */}
+    <div class="footer__main">
+      <div class="footer__grid">
+
+        {/* Column 1: Brand */}
+        <div class="footer__col">
+          <div class="footer__brand">
+            <span class="brand-etf">ETF</span><span class="brand-nexo">Nexo</span>
+          </div>
+          <p class="footer__tagline">
+            Rankings y análisis independientes de ETFs
+          </p>
+        </div>
+
+        {/* Column 2: Product */}
+        <div class="footer__col">
+          <h4 class="footer__title">Producto</h4>
+          <ul class="footer__list">
+            <li><a href="/rankings">Rankings</a></li>
+            <li><a href="/etfs">Buscador ETFs</a></li>
+            <li><a href="/noticias">Noticias</a></li>
+            <li><a href="/academia">Academia</a></li>
+          </ul>
+        </div>
+
+        {/* Column 3: Company */}
+        <div class="footer__col">
+          <h4 class="footer__title">Empresa</h4>
+          <ul class="footer__list">
+            <li><a href="/metodologia">Metodología</a></li>
+            <li><a href="/disclaimer">Disclaimer</a></li>
+            <li><a href="/newsletter">Newsletter</a></li>
+          </ul>
+        </div>
+
+        {/* Column 4: Legal */}
+        <div class="footer__col">
+          <h4 class="footer__title">Legal</h4>
+          <ul class="footer__list">
+            <li><a href="/aviso-legal">Aviso Legal</a></li>
+            <li><a href="/politica-cookies">Cookies</a></li>
+            <li><a href="/terminos-y-privacidad">Privacidad</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    {/* Bottom Bar */}
+    <div class="footer__bottom">
+      <p class="footer__copy">© {currentYear} ETFNexo. Todos los derechos reservados.</p>
+      <p class="footer__disclaimer">
+        Plataforma informativa. No prestamos servicios de inversión regulados.
+      </p>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--bg-dark);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4rem 0 2rem;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Partners Section */
+  .footer__partners {
+    text-align: center;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 4rem;
+  }
+
+  .footer__partners-title {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+  }
+
+  .footer__partners-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .partner-placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+  }
+
+  /* Main Footer */
+  .footer__main {
+    margin-bottom: 3rem;
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer__grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Brand */
+  .footer__brand {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .brand-etf {
+    color: white;
+  }
+
+  .brand-nexo {
+    color: var(--color-primary);
+  }
+
+  .footer__tagline {
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 280px;
+    line-height: 1.6;
+  }
+
+  /* Columns */
+  .footer__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer__list a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 0.2s;
+  }
+
+  .footer__list a:hover {
+    color: var(--color-primary);
+  }
+
+  /* Bottom Bar */
+  .footer__bottom {
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+    }
+  }
+
+  .footer__copy {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer__disclaimer {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.4);
+    max-width: 500px;
+  }
+
+  @media (min-width: 768px) {
+    .footer__disclaimer {
+      text-align: right;
+    }
+  }
+</style>

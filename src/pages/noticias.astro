@@ -1,211 +1,526 @@
 ---
 /**
  * Página: /noticias
- *
- * PoC Astro vs Next.js
- * Esta página demuestra:
- * - Fetch de Supabase server-side
- * - SSR dinámico (prerender = false)
- * - Zero JavaScript by default
+ * Sistema completo de noticias con infinite scroll y banners
+ * Prueba de performance con 120+ artículos
  */
 
-// Astro v5: Para PoC, generar HTML estático
-// (en producción real usaríamos SSR con output: 'hybrid')
-export const prerender = true;
+export const prerender = true; // SSG + Client-side infinite scroll
 
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { createServerClient } from '../lib/supabase';
-import { mockNoticias } from '../lib/mock-data';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { mockNoticiasLarge } from '../lib/mock-data-large';
 
-// PoC: Usar mock data mientras resolvemos conectividad Supabase en WSL
-const USE_MOCK_DATA = true;
+// Simular paginación server-side
+const ITEMS_PER_PAGE = 12;
+const allArticles = mockNoticiasLarge;
+const totalArticles = allArticles.length;
 
-let noticiasData: any[] = [];
-
-if (USE_MOCK_DATA) {
-  // Datos mock para demostración
-  console.log('[PoC] Usando datos mock (conectividad Supabase pendiente)');
-  noticiasData = mockNoticias;
-} else {
-  // Fetch noticias desde Supabase (server-side)
-  const supabase = createServerClient();
-
-  const { data: noticias, error } = await supabase
-    .from('news_articles')
-    .select('id, title, slug, excerpt, featured_image_url, published_at, category, etiquetas, views')
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-    .limit(20);
-
-  if (error) {
-    console.error('Error fetching noticias:', error);
-  }
-
-  noticiasData = noticias || [];
-}
+// Primera página (SSR)
+const initialArticles = allArticles.slice(0, ITEMS_PER_PAGE);
 ---
 
 <BaseLayout
-  title="Noticias y Análisis de ETFs"
+  title="Noticias y Análisis de ETFs | ETF Nexo"
   description="Últimas noticias, análisis y tendencias del mercado de ETFs. Mantente informado con nuestro equipo de expertos."
   ogImage="/og-images/noticias-og.png"
   canonical="/noticias"
 >
-  <main class="min-h-screen bg-gray-50">
-    <!-- Header Simple -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-      <div class="container mx-auto px-4 py-4">
-        <div class="flex items-center justify-between">
-          <a href="/" class="text-2xl font-bold text-primary">
-            ETF Nexo
-          </a>
-          <nav class="hidden md:flex gap-6">
-            <a href="/rankings" class="text-gray-700 hover:text-primary">Rankings</a>
-            <a href="/noticias" class="text-primary font-semibold">Noticias</a>
-            <a href="/academia" class="text-gray-700 hover:text-primary">Academia</a>
-            <a href="/entrevistas" class="text-gray-700 hover:text-primary">Entrevistas</a>
-          </nav>
-        </div>
-      </div>
-    </header>
+  <!-- Schema.org CollectionPage -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Noticias sobre ETFs',
+    description: 'Últimas noticias y análisis sobre fondos cotizados (ETFs)',
+    url: 'https://etfnexo.com/noticias'
+  })} />
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary to-primary-dark text-white py-16">
-      <div class="container mx-auto px-4">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">
-          Noticias y Análisis
+  <Header />
+
+  <!-- Hero Section -->
+  <section class="hero hero--noticias">
+    <div class="container">
+      <div class="hero__content" style="max-width: 800px;">
+        <!-- Badge actualizado -->
+        <div class="news-badge fade-in-up">
+          <div class="news-badge__pulse"></div>
+          <span>Actualizado diariamente</span>
+        </div>
+
+        <h1 class="hero__title fade-in-up" style="animation-delay: 0.1s;">
+          Noticias y <span class="highlight">Análisis</span>
         </h1>
-        <p class="text-xl opacity-90">
-          Mantente informado con las últimas tendencias del mercado de ETFs
+        <p class="hero__description fade-in-up" style="animation-delay: 0.2s;">
+          Mantente informado con las últimas tendencias y análisis del mercado de ETFs
         </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Noticias Grid -->
-    <section class="container mx-auto px-4 py-12">
-      {noticiasData.length === 0 ? (
-        <div class="text-center py-12">
-          <p class="text-gray-500 text-lg">No hay noticias publicadas</p>
-        </div>
-      ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {noticiasData.map((noticia) => (
-            <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <!-- Featured Image -->
-              {noticia.featured_image_url && (
-                <a href={`/noticias/${noticia.slug}`}>
-                  <img
-                    src={noticia.featured_image_url}
-                    alt={noticia.title}
-                    class="w-full h-48 object-cover"
-                    loading="lazy"
-                  />
-                </a>
-              )}
+  <!-- News Grid with Infinite Scroll -->
+  <section class="section section--light">
+    <div class="container">
 
-              <!-- Content -->
-              <div class="p-6">
-                <!-- Category Badge -->
-                {noticia.category && (
-                  <span class="inline-block px-3 py-1 text-xs font-semibold text-primary bg-primary/10 rounded-full mb-3">
-                    {noticia.category}
-                  </span>
-                )}
-
-                <!-- Title -->
-                <h2 class="text-xl font-bold mb-2 line-clamp-2">
-                  <a href={`/noticias/${noticia.slug}`} class="hover:text-primary transition-colors">
-                    {noticia.title}
-                  </a>
-                </h2>
-
-                <!-- Excerpt -->
-                {noticia.excerpt && (
-                  <p class="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {noticia.excerpt}
-                  </p>
-                )}
-
-                <!-- Meta -->
-                <div class="flex items-center justify-between text-xs text-gray-500">
-                  <time datetime={noticia.published_at}>
-                    {format(new Date(noticia.published_at), "d 'de' MMMM, yyyy", { locale: es })}
-                  </time>
-                  <span>{noticia.views || 0} vistas</span>
-                </div>
+      <!-- Grid de noticias -->
+      <div id="news-grid" class="news-grid">
+        {initialArticles.map((article, index) => (
+          <article class="news-card fade-in-up" style={`animation-delay: ${index * 0.05}s`}>
+            <a href={`/noticias/${article.slug}`} class="news-card__image">
+              <img
+                src={article.featured_image_url}
+                alt={article.title}
+                loading={index < 6 ? 'eager' : 'lazy'}
+                width="400"
+                height="225"
+              />
+            </a>
+            <div class="news-card__content">
+              <div class="news-card__meta">
+                <span class="badge-category badge-category--small">{article.category}</span>
+                <span class="article-date article-date--small">
+                  {new Date(article.published_at).toLocaleDateString('es-ES', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                  })}
+                </span>
               </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
-
-    <!-- Stats Footer -->
-    <section class="bg-white py-8 mt-12 border-t">
-      <div class="container mx-auto px-4">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div>
-            <div class="text-3xl font-bold text-primary">{noticiasData.length}</div>
-            <div class="text-sm text-gray-600">Noticias Publicadas</div>
-          </div>
-          <div>
-            <div class="text-3xl font-bold text-primary">
-              {noticiasData.reduce((sum, n) => sum + (n.views || 0), 0).toLocaleString()}
+              <h3 class="news-card__title">
+                <a href={`/noticias/${article.slug}`}>{article.title}</a>
+              </h3>
+              <p class="news-card__excerpt">{article.excerpt}</p>
+              <div class="news-card__footer">
+                <span class="news-card__source">{article.source_name}</span>
+              </div>
             </div>
-            <div class="text-sm text-gray-600">Lecturas Totales</div>
-          </div>
-          <div>
-            <div class="text-3xl font-bold text-primary">
-              {new Set(noticiasData.map(n => n.category).filter(Boolean)).size}
-            </div>
-            <div class="text-sm text-gray-600">Categorías</div>
-          </div>
-          <div>
-            <div class="text-3xl font-bold text-primary">Diario</div>
-            <div class="text-sm text-gray-600">Actualizaciones</div>
-          </div>
-        </div>
+          </article>
+        ))}
       </div>
-    </section>
-  </main>
+
+      <!-- Loading indicator -->
+      <div id="loading-indicator" class="loading-indicator" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Cargando más noticias...</p>
+      </div>
+
+      <!-- Intersection observer target -->
+      <div id="scroll-trigger" style="height: 1px;"></div>
+
+      <!-- End of list message -->
+      <div id="end-message" class="end-message" style="display: none;">
+        <p>Has visto todas las noticias disponibles ({totalArticles} artículos)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="cta-box">
+        <h2 style="color: white; margin-bottom: 1.5rem;">
+          ¿Buscas los mejores <span class="highlight">ETFs</span>?
+        </h2>
+        <p style="color: rgba(255,255,255,0.8); margin-bottom: 2rem; font-size: 1.125rem;">
+          Descubre nuestro ranking completo de ETFs evaluados con nuestro algoritmo propietario ETFNexo Score
+        </p>
+        <a href="/rankings" class="btn btn-primary">Ver Rankings de ETFs</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
 </BaseLayout>
 
-<style>
-  /* Utility classes para line-clamp (Tailwind v4) */
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+<style is:global>
+  /* Hero Noticias */
+  .hero--noticias {
+    padding: 6rem 0 5rem;
   }
 
-  .line-clamp-3 {
+  /* News Badge */
+  .news-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(39, 110, 240, 0.2);
+    border: 1px solid rgba(39, 110, 240, 0.3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+  }
+
+  .news-badge__pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--color-secondary);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+
+  /* News Grid */
+  .news-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .news-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .news-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* News Card */
+  .news-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .news-card__image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    display: block;
+    position: relative;
+  }
+
+  .news-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .news-card:hover .news-card__image img {
+    transform: scale(1.1);
+  }
+
+  .news-card__content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .news-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .news-card__title a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .news-card__title a:hover {
+    color: var(--color-primary);
+  }
+
+  .news-card__excerpt {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex: 1;
   }
 
-  /* Custom color utilities */
-  .text-primary {
-    color: var(--color-primary);
+  .news-card__footer {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--card-border);
   }
 
-  .bg-primary {
-    background-color: var(--color-primary);
+  .news-card__source {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
   }
 
-  .bg-primary\/10 {
-    background-color: rgba(250, 128, 41, 0.1);
+  /* Badge Category */
+  .badge-category {
+    background: var(--color-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    font-size: 0.875rem;
+    font-weight: 600;
   }
 
-  .from-primary {
-    --tw-gradient-from: var(--color-primary);
+  .badge-category--small {
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
   }
 
-  .to-primary-dark {
-    --tw-gradient-to: var(--color-primary-dark);
+  /* Article Date */
+  .article-date {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .article-date--small {
+    font-size: 0.875rem;
+  }
+
+  /* Loading Indicator */
+  .loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 0;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--bg-light);
+    border-top: 4px solid var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loading-indicator p {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  /* End Message */
+  .end-message {
+    text-align: center;
+    padding: 3rem 0;
+    border-top: 1px solid var(--card-border);
+  }
+
+  .end-message p {
+    color: var(--text-muted);
+  }
+
+  /* CTA Box */
+  .cta-box {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
   }
 </style>
+
+<script>
+  // Infinite Scroll Implementation
+  const newsGrid = document.getElementById('news-grid');
+  const loadingIndicator = document.getElementById('loading-indicator');
+  const scrollTrigger = document.getElementById('scroll-trigger');
+  const endMessage = document.getElementById('end-message');
+
+  let currentPage = 1;
+  const itemsPerPage = 12;
+  const totalArticles = 120; // Total de artículos mock
+  let isLoading = false;
+
+  // Función para cargar más artículos
+  async function loadMoreArticles() {
+    if (isLoading) return;
+
+    const totalPages = Math.ceil(totalArticles / itemsPerPage);
+    if (currentPage >= totalPages) {
+      scrollTrigger!.style.display = 'none';
+      endMessage!.style.display = 'block';
+      return;
+    }
+
+    isLoading = true;
+    loadingIndicator!.style.display = 'flex';
+
+    // Simular delay de red (500-1000ms)
+    await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 500));
+
+    try {
+      currentPage++;
+      const offset = (currentPage - 1) * itemsPerPage;
+
+      // Simular fetch - en producción sería: await fetch(`/api/noticias?offset=${offset}`)
+      const newArticles = await fetchMockArticles(offset, itemsPerPage);
+
+      // Renderizar nuevos artículos
+      newArticles.forEach((article: any, index: number) => {
+        const card = createNewsCard(article, index);
+        newsGrid!.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error('Error loading articles:', error);
+    } finally {
+      isLoading = false;
+      loadingIndicator!.style.display = 'none';
+    }
+  }
+
+  // Simular fetch de artículos
+  async function fetchMockArticles(offset: number, limit: number) {
+    // En producción esto haría fetch real a la API
+    const categories = ['ETFs', 'Mercados', 'Análisis', 'Regulación', 'Tecnología'];
+    const sources = ['Bloomberg', 'Reuters', 'Financial Times', 'ETF Nexo', 'Morningstar'];
+
+    return Array.from({ length: limit }, (_, i) => {
+      const index = offset + i;
+      if (index >= totalArticles) return null;
+
+      const category = categories[index % categories.length];
+      const source = sources[index % sources.length];
+      const daysAgo = Math.floor(index / 2);
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+
+      return {
+        id: `news-${index + 1}`,
+        title: `${category}: Noticia ${index + 1} - ${getTitleVariant(index)}`,
+        slug: `noticia-${index + 1}`,
+        excerpt: getExcerptVariant(index),
+        featured_image_url: `https://picsum.photos/seed/${index}/800/450`,
+        published_at: date.toISOString(),
+        category,
+        source_name: source
+      };
+    }).filter(Boolean);
+  }
+
+  function getTitleVariant(index: number): string {
+    const variants = [
+      'Los ETFs de tecnología marcan nuevos récords',
+      'Análisis profundo del mercado de bonos',
+      'Nuevas tendencias en inversión sostenible',
+      'El impacto de la inflación en los ETFs',
+      'Estrategias de diversificación para 2024'
+    ];
+    return variants[index % variants.length];
+  }
+
+  function getExcerptVariant(index: number): string {
+    const excerpts = [
+      'Los principales índices tecnológicos experimentan un crecimiento sostenido.',
+      'Un análisis detallado de las oportunidades en renta fija.',
+      'La inversión ESG continúa ganando tracción entre inversores.',
+      'Las subidas de tipos plantean nuevos desafíos de asignación.',
+      'Expertos recomiendan una mezcla equilibrada de activos.'
+    ];
+    return excerpts[index % excerpts.length];
+  }
+
+  // Crear card HTML (idéntico al SSR)
+  function createNewsCard(article: any, animationIndex: number) {
+    const card = document.createElement('article');
+    card.className = 'news-card fade-in-up';
+    card.style.animationDelay = `${animationIndex * 0.05}s`;
+
+    const date = new Date(article.published_at);
+    const formattedDate = date.toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+
+    // Escapar HTML para prevenir XSS
+    const escapeHtml = (text: string) => {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    };
+
+    const titleEscaped = escapeHtml(article.title);
+    const excerptEscaped = escapeHtml(article.excerpt);
+    const categoryEscaped = escapeHtml(article.category);
+    const sourceEscaped = escapeHtml(article.source_name);
+
+    card.innerHTML = `
+      <a href="/noticias/${article.slug}" class="news-card__image">
+        <img
+          src="${article.featured_image_url}"
+          alt="${titleEscaped}"
+          loading="lazy"
+          width="400"
+          height="225"
+        />
+      </a>
+      <div class="news-card__content">
+        <div class="news-card__meta">
+          <span class="badge-category badge-category--small">${categoryEscaped}</span>
+          <span class="article-date article-date--small">${formattedDate}</span>
+        </div>
+        <h3 class="news-card__title">
+          <a href="/noticias/${article.slug}">${titleEscaped}</a>
+        </h3>
+        <p class="news-card__excerpt">${excerptEscaped}</p>
+        <div class="news-card__footer">
+          <span class="news-card__source">${sourceEscaped}</span>
+        </div>
+      </div>
+    `;
+
+    return card;
+  }
+
+  // Intersection Observer para infinite scroll
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting && !isLoading) {
+        loadMoreArticles();
+      }
+    },
+    {
+      rootMargin: '400px', // Cargar cuando esté a 400px del trigger
+      threshold: 0.1
+    }
+  );
+
+  if (scrollTrigger) {
+    observer.observe(scrollTrigger);
+  }
+</script>

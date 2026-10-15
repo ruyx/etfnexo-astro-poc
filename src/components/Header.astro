@@ -1,0 +1,185 @@
+---
+/**
+ * Header Component - Diseño Agora Real REAL
+ * Header minimalista con glassmorphism
+ */
+---
+
+<header class="header">
+  <nav class="header__nav container">
+    {/* Logo */}
+    <a href="/" class="header__logo">
+      <img src="/logo-white.svg" alt="ETF Nexo" width="120" height="24" />
+    </a>
+
+    {/* Desktop Navigation */}
+    <ul class="header__menu">
+      <li><a href="/noticias" class="header__link">Noticias</a></li>
+      <li><a href="/academia" class="header__link">Academia</a></li>
+      <li><a href="/rankings" class="header__link">Rankings</a></li>
+      <li><a href="/etfs" class="header__link">ETFs</a></li>
+    </ul>
+
+    {/* CTA */}
+    <div class="header__cta">
+      <a href="/rankings" class="btn-cta">Ver Rankings</a>
+    </div>
+
+    {/* Mobile Toggle */}
+    <button class="header__toggle" id="menu-toggle" aria-label="Menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  {/* Mobile Menu */}
+  <div class="header__mobile" id="mobile-menu">
+    <a href="/noticias">Noticias</a>
+    <a href="/academia">Academia</a>
+    <a href="/rankings">Rankings</a>
+    <a href="/etfs">ETFs</a>
+    <a href="/rankings" class="btn-cta" style="margin-top: 2rem;">Ver Rankings</a>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(0, 21, 41, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    max-width: 1400px;
+  }
+
+  .header__logo img {
+    height: 28px;
+    width: auto;
+  }
+
+  .header__menu {
+    display: none;
+    list-style: none;
+    gap: 2.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .header__menu {
+      display: flex;
+    }
+  }
+
+  .header__link {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .header__link:hover {
+    color: #FD6D0A;
+  }
+
+  .header__cta {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .header__cta {
+      display: block;
+    }
+  }
+
+  .btn-cta {
+    background: #FD6D0A;
+    color: white;
+    padding: 0.625rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-cta:hover {
+    background: #E66100;
+    transform: translateY(-1px);
+  }
+
+  .header__toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .header__toggle span {
+    width: 24px;
+    height: 2px;
+    background: white;
+    transition: all 0.3s;
+  }
+
+  @media (min-width: 1024px) {
+    .header__toggle {
+      display: none;
+    }
+  }
+
+  .header__mobile {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem 1.5rem;
+    background: rgba(0, 21, 41, 0.98);
+    backdrop-filter: blur(12px);
+  }
+
+  .header__mobile.is-open {
+    display: flex;
+  }
+
+  .header__mobile a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 500;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    menu?.classList.toggle('is-open');
+  });
+
+  // Cerrar al hacer click en un link
+  menu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('is-open');
+    });
+  });
+</script>

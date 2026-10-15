@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Política de Cookies | ETF Nexo"
+  description="Política de cookies de ETF Nexo. Información sobre qué cookies utilizamos y cómo gestionarlas."
+>
+  <Header />
+
+  <main class="section section--white">
+    <div class="container" style="max-width: 900px;">
+      <h1 class="mb-8">Política de Cookies</h1>
+
+      <div class="legal-content">
+        <section class="mb-12">
+          <h2 class="mb-4">¿Qué son las cookies?</h2>
+          <p>
+            Las cookies son pequeños archivos de texto que los sitios web almacenan en tu dispositivo cuando los visitas. Se utilizan ampliamente para hacer que los sitios web funcionen de manera más eficiente, así como para proporcionar información a los propietarios del sitio.
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Cookies que utilizamos</h2>
+
+          <h3 class="text-lg font-semibold mt-6 mb-3">1. Cookies Estrictamente Necesarias</h3>
+          <p>
+            Estas cookies son esenciales para que puedas navegar por el sitio web y utilizar sus funciones. Sin estas cookies, no se pueden proporcionar los servicios solicitados.
+          </p>
+          <ul class="legal-list">
+            <li><strong>Cookie de sesión:</strong> Mantiene tu sesión activa mientras navegas</li>
+            <li><strong>Cookie de consentimiento:</strong> Recuerda tus preferencias de cookies</li>
+          </ul>
+
+          <h3 class="text-lg font-semibold mt-6 mb-3">2. Cookies Analíticas</h3>
+          <p>
+            Utilizamos Google Analytics para entender cómo los visitantes utilizan nuestro sitio web. Esto nos ayuda a mejorar la experiencia del usuario.
+          </p>
+          <ul class="legal-list">
+            <li><strong>_ga:</strong> Registra una identificación única para generar datos estadísticos (2 años)</li>
+            <li><strong>_ga_*:</strong> Utilizado por Google Analytics para mantener el estado de la sesión (2 años)</li>
+          </ul>
+
+          <h3 class="text-lg font-semibold mt-6 mb-3">3. Cookies de Publicidad (Google AdSense)</h3>
+          <p>
+            Utilizamos Google AdSense para mostrar anuncios relevantes. Estas cookies permiten que los anuncios sean más útiles para ti.
+          </p>
+          <ul class="legal-list">
+            <li><strong>__gads:</strong> Muestra anuncios relevantes para el usuario (13 meses)</li>
+            <li><strong>DSID:</strong> Identifica los navegadores con fines publicitarios (2 semanas)</li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Cómo gestionar las cookies</h2>
+          <p>
+            Puedes controlar y/o eliminar las cookies como desees. Puedes eliminar todas las cookies que ya están en tu dispositivo y puedes configurar la mayoría de los navegadores para evitar que se coloquen.
+          </p>
+
+          <h3 class="text-lg font-semibold mt-6 mb-3">Configuración por navegador:</h3>
+          <ul class="legal-list">
+            <li><strong>Chrome:</strong> Configuración > Privacidad y seguridad > Cookies y otros datos de sitios</li>
+            <li><strong>Firefox:</strong> Opciones > Privacidad y seguridad > Cookies y datos del sitio</li>
+            <li><strong>Safari:</strong> Preferencias > Privacidad > Cookies y datos de sitios web</li>
+            <li><strong>Edge:</strong> Configuración > Cookies y permisos del sitio > Cookies y datos del sitio</li>
+          </ul>
+
+          <p class="mt-4">
+            Ten en cuenta que si eliminas o deshabilitas nuestras cookies, es posible que experimentes inconvenientes o que algunas funciones de nuestro sitio web no funcionen correctamente.
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Cookies de terceros</h2>
+          <p>
+            Utilizamos servicios de terceros que pueden establecer sus propias cookies:
+          </p>
+          <ul class="legal-list">
+            <li><strong>Google Analytics:</strong> Para análisis de tráfico web</li>
+            <li><strong>Google AdSense:</strong> Para mostrar anuncios personalizados</li>
+          </ul>
+          <p class="mt-4">
+            Puedes obtener más información sobre estas cookies visitando:
+          </p>
+          <ul class="legal-list">
+            <li><a href="https://policies.google.com/technologies/cookies" class="text-primary hover:underline" target="_blank" rel="noopener">Política de cookies de Google</a></li>
+            <li><a href="https://policies.google.com/privacy" class="text-primary hover:underline" target="_blank" rel="noopener">Política de privacidad de Google</a></li>
+          </ul>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Consentimiento</h2>
+          <p>
+            Al utilizar nuestro sitio web por primera vez, se te mostrará un banner de cookies solicitando tu consentimiento. Si continúas navegando sin modificar la configuración de tu navegador, asumiremos que aceptas recibir todas las cookies de este sitio web.
+          </p>
+          <p class="mt-4">
+            Puedes cambiar tus preferencias en cualquier momento haciendo clic en el enlace "Configuración de cookies" en el footer de nuestro sitio.
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Actualizaciones de esta política</h2>
+          <p>
+            Podemos actualizar nuestra Política de Cookies de vez en cuando. Te notificaremos cualquier cambio publicando la nueva Política de Cookies en esta página y actualizando la fecha de "última actualización".
+          </p>
+        </section>
+
+        <section class="mb-12">
+          <h2 class="mb-4">Contacto</h2>
+          <p>
+            Si tienes preguntas sobre nuestra Política de Cookies, puedes contactarnos en:
+          </p>
+          <ul class="legal-list">
+            <li><strong>Email:</strong> privacy@etfnexo.com</li>
+          </ul>
+        </section>
+
+        <p class="text-small text-secondary mt-16">
+          Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-content {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .legal-content h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+  }
+
+  .legal-content h3 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+  }
+
+  .legal-content p {
+    color: var(--text-secondary);
+  }
+
+  .legal-list {
+    list-style: disc;
+    margin-left: var(--spacing-8);
+    margin-top: var(--spacing-4);
+    color: var(--text-secondary);
+  }
+
+  .legal-list li {
+    margin-bottom: var(--spacing-2);
+  }
+
+  .text-primary {
+    color: var(--color-primary);
+  }
+
+  .hover\:underline:hover {
+    text-decoration: underline;
+  }
+</style>
