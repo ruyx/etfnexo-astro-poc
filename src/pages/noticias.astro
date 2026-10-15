@@ -9,8 +9,9 @@
  * - Zero JavaScript by default
  */
 
-// Astro v5: Para SSR, desactivar prerender
-export const prerender = false;
+// Astro v5: Para PoC, generar HTML estático
+// (en producción real usaríamos SSR con output: 'hybrid')
+export const prerender = true;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { createServerClient } from '../lib/supabase';
