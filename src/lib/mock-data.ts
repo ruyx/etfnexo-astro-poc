@@ -1,0 +1,73 @@
+/**
+ * Mock Data para PoC
+ * Datos de ejemplo mientras resolvemos conectividad Supabase
+ */
+
+export const mockNoticias = [
+  {
+    id: '1',
+    title: 'Los ETFs de tecnología superan expectativas en 2026',
+    slug: 'etfs-tecnologia-superan-expectativas-2026',
+    excerpt: 'Los fondos cotizados centrados en el sector tecnológico han mostrado un rendimiento excepcional en el primer semestre, impulsados por la revolución de la IA.',
+    featured_image_url: 'https://images.pexels.com/photos/159888/pexels-photo-159888.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-10-10T10:00:00Z',
+    category: 'análisis',
+    etiquetas: ['tecnología', 'AI', 'rendimiento'],
+    views: 1245,
+  },
+  {
+    id: '2',
+    title: 'Guía completa: Cómo elegir un ETF para principiantes',
+    slug: 'guia-completa-elegir-etf-principiantes',
+    excerpt: 'Todo lo que necesitas saber antes de invertir en tu primer ETF: desde comprender el TER hasta analizar la réplica del índice.',
+    featured_image_url: 'https://images.pexels.com/photos/210607/pexels-photo-210607.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-10-08T14:30:00Z',
+    category: 'educación',
+    etiquetas: ['principiantes', 'guía', 'inversión'],
+    views: 3421,
+  },
+  {
+    id: '3',
+    title: 'ETFs sostenibles: ¿Moda o tendencia de largo plazo?',
+    slug: 'etfs-sostenibles-moda-o-tendencia',
+    excerpt: 'Analizamos si los ETFs ESG son una apuesta sólida o simplemente una estrategia de marketing de las gestoras.',
+    featured_image_url: 'https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-10-05T09:15:00Z',
+    category: 'opinión',
+    etiquetas: ['ESG', 'sostenibilidad', 'tendencias'],
+    views: 892,
+  },
+  {
+    id: '4',
+    title: 'Mejores ETFs de dividendos para generar renta pasiva',
+    slug: 'mejores-etfs-dividendos-renta-pasiva',
+    excerpt: 'Selección de los ETFs más rentables para inversores que buscan ingresos recurrentes mediante dividendos.',
+    featured_image_url: 'https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-10-03T16:00:00Z',
+    category: 'análisis',
+    etiquetas: ['dividendos', 'renta pasiva', 'rankings'],
+    views: 2156,
+  },
+  {
+    id: '5',
+    title: 'Comparativa: ETFs de réplica física vs sintética',
+    slug: 'comparativa-etfs-replica-fisica-sintetica',
+    excerpt: 'Explicamos las diferencias clave entre ambos tipos de réplica y cuál es mejor según tu perfil de inversor.',
+    featured_image_url: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-10-01T11:45:00Z',
+    category: 'educación',
+    etiquetas: ['réplica', 'comparativa', 'técnico'],
+    views: 1678,
+  },
+  {
+    id: '6',
+    title: 'Noticias: Vanguard lanza nuevo ETF de mercados emergentes',
+    slug: 'vanguard-lanza-etf-mercados-emergentes',
+    excerpt: 'La gestora estadounidense amplía su catálogo con un producto centrado en Asia y Latinoamérica con un TER del 0.15%.',
+    featured_image_url: 'https://images.pexels.com/photos/4386366/pexels-photo-4386366.jpeg?auto=compress&cs=tinysrgb&w=1200',
+    published_at: '2026-09-28T08:00:00Z',
+    category: 'noticias',
+    etiquetas: ['Vanguard', 'emergentes', 'lanzamiento'],
+    views: 965,
+  },
+];

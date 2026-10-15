@@ -1,0 +1,102 @@
+---
+/**
+ * Layout Base - ETF Nexo
+ *
+ * Layout principal reutilizado en todas las páginas
+ * Incluye: meta tags, Schema.org, Google Fonts
+ */
+
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'ETF Nexo - Rankings y Análisis de ETFs',
+  description = 'Descubre los mejores ETFs del mercado con análisis profesionales, rankings actualizados y herramientas de comparación.',
+  ogImage = '/og-images/home-og.png',
+  canonical = Astro.url.pathname,
+} = Astro.props;
+
+const fullTitle = title.includes('ETF Nexo') ? title : `${title} | ETF Nexo`;
+const canonicalURL = new URL(canonical, Astro.site || 'https://etfnexo.com');
+const ogImageURL = new URL(ogImage, Astro.site || 'https://etfnexo.com');
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Meta Tags Básicos -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalURL.href} />
+
+    <!-- Open Graph (Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageURL.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="ETF Nexo" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL.href} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL.href} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Open+Sans+Hebrew:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org - Organization -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ETF Nexo",
+      "url": "https://etfnexo.com",
+      "logo": "https://etfnexo.com/logo.png",
+      "description": "Plataforma líder de análisis y rankings de ETFs",
+      "sameAs": [
+        "https://twitter.com/etfnexo",
+        "https://linkedin.com/company/etfnexo"
+      ]
+    })} />
+
+    <!-- Schema.org - WebSite -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ETF Nexo",
+      "url": "https://etfnexo.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://etfnexo.com/rankings?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    })} />
+
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
