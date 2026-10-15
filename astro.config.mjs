@@ -3,8 +3,6 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
-import node from '@astrojs/node';
-
 // https://astro.build/config
 export default defineConfig({
   integrations: [react()],
@@ -13,18 +11,14 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  // Astro v5: output: 'static' es el default y permite SSR selectivo
-  // Para SSR en una página específica, usar export const prerender = false
+  // PoC: Output completamente estático (sin adapter)
+  // Genera HTML puro sin servidor
   output: 'static',
 
   server: {
-    port: 5001, // Diferente a Next.js (5000)
+    port: 5001,
   },
 
   // Para canonical URLs
   site: 'https://etfnexo.com',
-
-  adapter: node({
-    mode: 'standalone'
-  })
 });
